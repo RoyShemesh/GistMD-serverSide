@@ -7,6 +7,9 @@ class ErrorBucket extends Error {
 		if (this instanceof ErrorMissingInfo) {
 			this.type = 'Missing info';
 			this.status = 400;
+		} else if (this instanceof ErrorInvalidVariable) {
+			this.type = 'Invalid varibales';
+			this.status = 400;
 		} else {
 			this.type = 'Internal server error';
 			this.status = 500;
@@ -16,3 +19,4 @@ class ErrorBucket extends Error {
 }
 
 export class ErrorMissingInfo extends ErrorBucket {}
+export class ErrorInvalidVariable extends ErrorBucket {}

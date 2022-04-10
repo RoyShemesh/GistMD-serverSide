@@ -1,6 +1,6 @@
-import ExpenseSchema from '../schema/Patient';
 import validator from 'validator';
-// import { ErrorInvalidVariable } from '../../utils/errorClass';
+import { ErrorInvalidVariable } from '../../utils/errorClass';
+import PatientModel from '../schema/Patient';
 
 export const addPatient = async (
 	gender: string,
@@ -8,5 +8,11 @@ export const addPatient = async (
 	age: string,
 	surgeryName: string
 ) => {
-	if(!validator.isNumeric(age.t))
+	if (!validator.isNumeric(age.toString())) throw new ErrorInvalidVariable();
+	if (gender !== 'Male' && gender !== 'Female') throw new ErrorInvalidVariable();
+	if (language !== 'Hebrew' && language !== 'Arabic' && language !== 'Engilsh')
+		throw new ErrorInvalidVariable();
+	const newPatient = new PatientModel({ gender, language, age, surgeryName });
+	await newPatient.save();
+	return newPatient;
 };
