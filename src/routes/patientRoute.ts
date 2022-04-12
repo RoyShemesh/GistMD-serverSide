@@ -1,6 +1,6 @@
 import express from 'express';
 import { ErrorMissingInfo } from '../utils/errorClass';
-import { addPatient } from '../mongo/controllers/patientController';
+import { addPatient, deletePatient } from '../mongo/controllers/patientController';
 import PatientModel from '../mongo/schema/Patient';
 const router = express.Router();
 
@@ -19,6 +19,17 @@ router.put('/newPatient', async (req, res, next) => {
 		if (!age || !language || !surgeryName || !gender) throw new ErrorMissingInfo();
 		const newExpense = await addPatient(gender, language, age, surgeryName);
 		res.send(newExpense);
+	} catch (error) {
+		next(error);
+	}
+});
+
+router.delete('/', async (req, res, next) => {
+	try {
+		const { patientId } = req.body;
+		if (!patientId) throw new ErrorMissingInfo();
+		await deletePatient(patientId);
+		res.sendStatus(204);
 	} catch (error) {
 		next(error);
 	}
